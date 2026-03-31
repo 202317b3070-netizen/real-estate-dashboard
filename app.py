@@ -18,6 +18,29 @@ st.markdown("### Analyze housing prices with interactive predictions and insight
 # -----------------------------
 # LOAD DATA
 # -----------------------------
+st.subheader("📊 Dataset Overview")
+ 
+st.write("### Shape of Dataset")
+st.write(df.shape)
+ 
+st.write("### Column Names")
+st.write(df.columns)
+ 
+st.write("### Sample Data")
+st.dataframe(df.head())
+
+st.subheader("🧹 Data Cleaning")
+ 
+missing_values = df.isnull().sum()
+ 
+st.write("Missing Values in Dataset:")
+st.write(missing_values)
+ 
+if missing_values.sum() == 0:
+    st.success("No missing values found ✅")
+st.subheader("📈 Statistical Summary")
+st.write(df.describe())
+
 @st.cache_data
 def load_data():
     data = fetch_california_housing()
