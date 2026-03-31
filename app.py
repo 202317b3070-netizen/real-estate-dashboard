@@ -6,7 +6,23 @@ from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 import plotly.express as px
- 
+st.markdown("""
+<style>
+.main {
+    background-color: #f5f7fa;
+}
+h1, h2, h3 {
+    color: #1f2937;
+}
+.stMetric {
+    background-color: #ffffff;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.05);
+}
+</style>
+""", unsafe_allow_html=True)
+  
 # -----------------------------
 # PAGE CONFIG
 # -----------------------------
@@ -55,7 +71,17 @@ def load_data():
     return df
  
 df = load_data()
- # -----------------------------
+st.markdown("""
+<div style="background: linear-gradient(90deg, #4facfe, #00f2fe);
+            padding: 20px;
+            border-radius: 12px;">
+    <h1 style="color:white;">🏠 Real Estate What-If Market Analyzer</h1>
+    <p style="color:white;">Analyze housing prices with interactive predictions</p>
+</div>
+""", unsafe_allow_html=True)
+ 
+st.markdown("<br>", unsafe_allow_html=True)
+# -----------------------------
 # HEADER
 # -----------------------------
 st.markdown("""
@@ -133,35 +159,30 @@ score = model.score(X_test, y_test)
 # -----------------------------
 # KPI METRICS
 # -----------------------------
+st.markdown("## 📊 Key Metrics")
+ 
 col1, col2, col3 = st.columns(3)
  
-USD_TO_INR = 83
- 
-if currency == "INR":
-    price = prediction * USD_TO_INR
-    display_price = format_indian_price(price)
-else:
-    price = prediction
-    display_price = f"$ {int(price):,}"
- 
 col1.metric("💰 Predicted Price", display_price)
-col2.metric("📈 Model Accuracy (R²)", round(score, 3))
-col3.metric("🏘 Avg Area Income", round(df['MedInc'].mean(), 2))
+col2.metric("📈 Model Accuracy", f"{round(score, 2)}")
+col3.metric("🏘 Avg Income", f"{round(df['MedInc'].mean(), 2)}")
  
 # -----------------------------
 # CHARTS
 # -----------------------------
-st.subheader("📊 Market Insights")
+st.markdown("## 📉 Market Analysis")
  
 col1, col2 = st.columns(2)
  
 with col1:
-    fig = px.scatter(df, x="MedInc", y="Price", title="Income vs Price")
-    st.plotly_chart(fig)
+    st.markdown("### 💵 Income vs Price")
+    fig = px.scatter(df, x="MedInc", y="Price", color="Price")
+    st.plotly_chart(fig, use_container_width=True)
  
 with col2:
-    fig2 = px.histogram(df, x="Price", title="Price Distribution")
-    st.plotly_chart(fig2)
+    st.markdown("### 📊 Price Distribution")
+    fig2 = px.histogram(df, x="Price")
+    st.plotly_chart(fig2, use_container_width=True)
  
 # -----------------------------
 # WHAT-IF ANALYSIS TEXT
