@@ -65,20 +65,44 @@ st.markdown("""
 
 st.markdown("---")
 # -----------------------------
-# SIDEBAR
+# SIDEBAR (UPDATED UI)
 # -----------------------------
-st.sidebar.header("⚙️ Controls")
+st.sidebar.title("⚙️ Control Panel")
  
+st.sidebar.markdown("### 🧠 Model Settings")
 model_choice = st.sidebar.selectbox(
-    "Choose Model",
+    "Select Model",
     ["Linear Regression", "Random Forest"]
 )
  
-# ✅ ADD THIS HERE
+st.sidebar.markdown("### 💱 Currency")
 currency = st.sidebar.selectbox(
     "Select Currency",
     ["USD", "INR"]
 )
+ 
+st.sidebar.markdown("### 🏠 Property Features")
+income = st.sidebar.slider(
+    "Median Income",
+    float(df['MedInc'].min()),
+    float(df['MedInc'].max()),
+    3.0
+)
+ 
+rooms = st.sidebar.slider(
+    "Average Rooms",
+    float(df['AveRooms'].min()),
+    float(df['AveRooms'].max()),
+    5.0
+)
+ 
+occup = st.sidebar.slider(
+    "Occupancy",
+    float(df['AveOccup'].min()),
+    float(df['AveOccup'].max()),
+    3.0
+)
+
 def format_indian_price(price):
     if price >= 10000000:
         return f"₹ {price/10000000:.2f} Cr"
