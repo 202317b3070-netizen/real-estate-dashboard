@@ -154,6 +154,15 @@ else:
 model.fit(X_train, y_train)
  
 prediction = model.predict([[income, rooms, occup]])[0]
+USD_TO_INR = 83
+ 
+if currency == "INR":
+    price = prediction * USD_TO_INR
+    display_price = format_indian_price(price)
+else:
+    price = prediction
+    display_price = f"$ {int(price):,}"
+ 
 score = model.score(X_test, y_test)
  
 # -----------------------------
