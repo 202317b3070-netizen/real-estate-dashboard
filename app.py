@@ -65,7 +65,12 @@ score = model.score(X_test, y_test)
 # -----------------------------
 col1, col2, col3 = st.columns(3)
  
-col1.metric("💰 Predicted Price", f"${int(prediction):,}")
+USD_TO_INR = 83
+ 
+price_inr = prediction * USD_TO_INR
+ 
+col1.metric("💰 Predicted Price", f"₹ {int(price_inr):,}")
+ 
 col2.metric("📈 Model Accuracy (R²)", round(score, 3))
 col3.metric("🏘 Avg Area Income", round(df['MedInc'].mean(), 2))
  
