@@ -110,11 +110,7 @@ def format_indian_price(price):
         return f"₹ {price/100000:.2f} Lakh"
     else:
         return f"₹ {price:,.0f}"
- 
-income = st.sidebar.slider("Median Income", float(df['MedInc'].min()), float(df['MedInc'].max()), 3.0)
-rooms = st.sidebar.slider("Average Rooms", float(df['AveRooms'].min()), float(df['AveRooms'].max()), 5.0)
-occup = st.sidebar.slider("Average Occupancy", float(df['AveOccup'].min()), float(df['AveOccup'].max()), 3.0)
- 
+
 # -----------------------------
 # MODEL
 # -----------------------------
