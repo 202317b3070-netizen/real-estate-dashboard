@@ -5,7 +5,7 @@ from sklearn.datasets import fetch_california_housing
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
-from utilsimport format_indian_price
+from utils import format_indian_price
 import plotly.express as px
 st.markdown("""
 <style>
