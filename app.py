@@ -63,7 +63,6 @@ st.subheader("📈 Statistical Summary")
 st.write(df.describe())
 
 @st.cache_data
-df = load_data()
 st.markdown("""
 <div style="background: linear-gradient(90deg, #4facfe, #00f2fe);
             padding: 20px;
