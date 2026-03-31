@@ -118,6 +118,27 @@ rooms = st.sidebar.slider(
     float(df['AveRooms'].max()),
     5.0
 )
+st.sidebar.markdown("### 📍 Location Filter")
+ 
+lat = st.sidebar.slider(
+    "Select Latitude",
+    float(df['Latitude'].min()),
+    float(df['Latitude'].max()),
+    float(df['Latitude'].mean())
+)
+ 
+lon = st.sidebar.slider(
+    "Select Longitude",
+    float(df['Longitude'].min()),
+    float(df['Longitude'].max()),
+    float(df['Longitude'].mean())
+)
+
+filtered_df = df[
+    (df['Latitude'].between(lat - 1, lat + 1)) &
+    (df['Longitude'].between(lon - 1, lon + 1))
+]
+ 
  
 occup = st.sidebar.slider(
     "Occupancy",
