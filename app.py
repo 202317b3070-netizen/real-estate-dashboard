@@ -62,7 +62,6 @@ if missing_values.sum() == 0:
 st.subheader("📈 Statistical Summary")
 st.write(df.describe())
 
-@st.cache_data
 st.markdown("""
 <div style="background: linear-gradient(90deg, #4facfe, #00f2fe);
             padding: 20px;
