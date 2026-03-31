@@ -42,6 +42,13 @@ currency = st.sidebar.selectbox(
     "Select Currency",
     ["USD", "INR"]
 )
+def format_indian_price(price):
+    if price >= 10000000:
+        return f"₹ {price/10000000:.2f} Cr"
+    elif price >= 100000:
+        return f"₹ {price/100000:.2f} Lakh"
+    else:
+        return f"₹ {price:,.0f}"
  
 income = st.sidebar.slider("Median Income", float(df['MedInc'].min()), float(df['MedInc'].max()), 3.0)
 rooms = st.sidebar.slider("Average Rooms", float(df['AveRooms'].min()), float(df['AveRooms'].max()), 5.0)
