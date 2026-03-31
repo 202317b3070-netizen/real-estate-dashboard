@@ -27,6 +27,7 @@ h1, h2, h3 {
 # PAGE CONFIG
 # -----------------------------
 st.set_page_config(page_title="Real Estate Analyzer", layout="wide")
+st.write(df.columns)
  
 st.title("🏠 Real Estate What-If Market Analyzer")
 st.markdown("### Analyze housing prices with interactive predictions and insights")
