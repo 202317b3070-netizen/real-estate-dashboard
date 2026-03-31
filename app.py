@@ -45,9 +45,6 @@ df["Price"] = data.target * 100000
  
 st.write(df.shape)
  
-st.write("### Column Names")
-st.write(df.columns)
- 
 st.write("### Sample Data")
 st.dataframe(df.head())
 
