@@ -6,6 +6,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 from utils import format_indian_price
+from data import load_data
 import plotly.express as px
 st.markdown("""
 <style>
@@ -62,12 +63,6 @@ st.subheader("📈 Statistical Summary")
 st.write(df.describe())
 
 @st.cache_data
-def load_data():
-    data = fetch_california_housing()
-    df = pd.DataFrame(data.data, columns=data.feature_names)
-    df["Price"] = data.target * 100000
-    return df
- 
 df = load_data()
 st.markdown("""
 <div style="background: linear-gradient(90deg, #4facfe, #00f2fe);
