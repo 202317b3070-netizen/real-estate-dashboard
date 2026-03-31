@@ -37,6 +37,12 @@ model_choice = st.sidebar.selectbox(
     ["Linear Regression", "Random Forest"]
 )
  
+# ✅ ADD THIS HERE
+currency = st.sidebar.selectbox(
+    "Select Currency",
+    ["USD", "INR"]
+)
+ 
 income = st.sidebar.slider("Median Income", float(df['MedInc'].min()), float(df['MedInc'].max()), 3.0)
 rooms = st.sidebar.slider("Average Rooms", float(df['AveRooms'].min()), float(df['AveRooms'].max()), 5.0)
 occup = st.sidebar.slider("Average Occupancy", float(df['AveOccup'].min()), float(df['AveOccup'].max()), 3.0)
@@ -67,10 +73,14 @@ col1, col2, col3 = st.columns(3)
  
 USD_TO_INR = 83
  
-price_inr = prediction * USD_TO_INR
+if currency == "INR":
+    price = prediction * USD_TO_INR
+    display_price = format_indian_price(price)
+else:
+    price = prediction
+    display_price = f"$ {int(price):,}"
  
-col1.metric("💰 Predicted Price", f"₹ {int(price_inr):,}")
- 
+col1.metric("💰 Predicted Price", display_price)
 col2.metric("📈 Model Accuracy (R²)", round(score, 3))
 col3.metric("🏘 Avg Area Income", round(df['MedInc'].mean(), 2))
  
