@@ -26,7 +26,15 @@ def load_data():
     return df
  
 df = load_data()
- 
+ # -----------------------------
+# HEADER
+# -----------------------------
+st.markdown("""
+# 🏠 Real Estate What-If Market Analyzer
+### 📊 Analyze housing prices with interactive predictions
+""")
+
+st.markdown("---")
 # -----------------------------
 # SIDEBAR
 # -----------------------------
