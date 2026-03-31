@@ -5,6 +5,7 @@ from sklearn.datasets import fetch_california_housing
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
+from utilsimport format_indian_price
 import plotly.express as px
 st.markdown("""
 <style>
@@ -146,14 +147,6 @@ occup = st.sidebar.slider(
     float(df['AveOccup'].max()),
     3.0
 )
-
-def format_indian_price(price):
-    if price >= 10000000:
-        return f"₹ {price/10000000:.2f} Cr"
-    elif price >= 100000:
-        return f"₹ {price/100000:.2f} Lakh"
-    else:
-        return f"₹ {price:,.0f}"
 
 # -----------------------------
 # MODEL
