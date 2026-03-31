@@ -3,9 +3,9 @@ import pandas as pd
 import numpy as np
 from sklearn.datasets import fetch_california_housing
 from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
-import matplotlib.pyplot as plt
-import seaborn as sns
+import plotly.express as px
  
 # -----------------------------
 # PAGE CONFIG
@@ -13,106 +13,107 @@ import seaborn as sns
 st.set_page_config(page_title="Real Estate Analyzer", layout="wide")
  
 st.title("🏠 Real Estate What-If Market Analyzer")
+st.markdown("### Analyze housing prices with interactive predictions and insights")
  
 # -----------------------------
-# LOAD REAL DATASET
+# LOAD DATA
 # -----------------------------
 @st.cache_data
 def load_data():
     data = fetch_california_housing()
     df = pd.DataFrame(data.data, columns=data.feature_names)
-    df["Price"] = data.target * 100000  # convert to realistic price
+    df["Price"] = data.target * 100000
     return df
  
 df = load_data()
  
 # -----------------------------
-# SHOW DATA
+# SIDEBAR
 # -----------------------------
-st.subheader("📊 Dataset Preview")
-st.dataframe(df.head())
+st.sidebar.header("⚙️ Controls")
+ 
+model_choice = st.sidebar.selectbox(
+    "Choose Model",
+    ["Linear Regression", "Random Forest"]
+)
+ 
+income = st.sidebar.slider("Median Income", float(df['MedInc'].min()), float(df['MedInc'].max()), 3.0)
+rooms = st.sidebar.slider("Average Rooms", float(df['AveRooms'].min()), float(df['AveRooms'].max()), 5.0)
+occup = st.sidebar.slider("Average Occupancy", float(df['AveOccup'].min()), float(df['AveOccup'].max()), 3.0)
  
 # -----------------------------
-# SELECT FEATURES
+# MODEL
 # -----------------------------
 features = ['MedInc', 'AveRooms', 'AveOccup']
-target = 'Price'
- 
 X = df[features]
-y = df[target]
+y = df['Price']
  
-# -----------------------------
-# TRAIN MODEL
-# -----------------------------
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
  
-model = LinearRegression()
+if model_choice == "Linear Regression":
+    model = LinearRegression()
+else:
+    model = RandomForestRegressor()
+ 
 model.fit(X_train, y_train)
  
-# -----------------------------
-# SIDEBAR INPUT
-# -----------------------------
-st.sidebar.header("🔧 What-If Analysis")
- 
-income = st.sidebar.slider("Median Income", float(X['MedInc'].min()), float(X['MedInc'].max()), 3.0)
-rooms = st.sidebar.slider("Average Rooms", float(X['AveRooms'].min()), float(X['AveRooms'].max()), 5.0)
-occup = st.sidebar.slider("Average Occupancy", float(X['AveOccup'].min()), float(X['AveOccup'].max()), 3.0)
- 
-# -----------------------------
-# PREDICTION
-# -----------------------------
-input_data = np.array([[income, rooms, occup]])
-prediction = model.predict(input_data)[0]
- 
-st.subheader("💰 Predicted House Price")
-st.success(f"${int(prediction):,}")
- 
-# -----------------------------
-# MODEL SCORE
-# -----------------------------
+prediction = model.predict([[income, rooms, occup]])[0]
 score = model.score(X_test, y_test)
-st.write(f"📈 Model R² Score: {round(score, 3)}")
  
 # -----------------------------
-# VISUALIZATIONS
+# KPI METRICS
 # -----------------------------
-st.subheader("📊 Visual Insights")
+col1, col2, col3 = st.columns(3)
+ 
+col1.metric("💰 Predicted Price", f"${int(prediction):,}")
+col2.metric("📈 Model Accuracy (R²)", round(score, 3))
+col3.metric("🏘 Avg Area Income", round(df['MedInc'].mean(), 2))
+ 
+# -----------------------------
+# CHARTS
+# -----------------------------
+st.subheader("📊 Market Insights")
  
 col1, col2 = st.columns(2)
  
-# Scatter Plot
 with col1:
-    st.write("Price vs Income")
-    fig1, ax1 = plt.subplots()
-    ax1.scatter(df['MedInc'], df['Price'])
-    ax1.set_xlabel("Median Income")
-    ax1.set_ylabel("Price")
-    st.pyplot(fig1)
+    fig = px.scatter(df, x="MedInc", y="Price", title="Income vs Price")
+    st.plotly_chart(fig)
  
-# Heatmap
 with col2:
-    st.write("Correlation Heatmap")
-    fig2, ax2 = plt.subplots()
-    sns.heatmap(df.corr(), annot=True, cmap="coolwarm", ax=ax2)
-    st.pyplot(fig2)
+    fig2 = px.histogram(df, x="Price", title="Price Distribution")
+    st.plotly_chart(fig2)
  
 # -----------------------------
-# FEATURE IMPORTANCE
+# WHAT-IF ANALYSIS TEXT
 # -----------------------------
-st.subheader("📌 Feature Importance")
+st.subheader("🔍 What-If Analysis Insight")
  
-coeff_df = pd.DataFrame(model.coef_, features, columns=["Coefficient"])
-st.bar_chart(coeff_df)
+if income > df['MedInc'].mean():
+    st.info("Higher income areas tend to have higher house prices.")
+else:
+    st.info("Lower income areas generally show lower house prices.")
  
 # -----------------------------
-# SHOW FULL DATA
+# FEATURE IMPORTANCE (RF ONLY)
 # -----------------------------
-if st.checkbox("Show Full Dataset"):
-    st.write(df)
+if model_choice == "Random Forest":
+    st.subheader("📌 Feature Importance")
+    importance = pd.DataFrame({
+        "Feature": features,
+        "Importance": model.feature_importances_
+    })
+    st.bar_chart(importance.set_index("Feature"))
+ 
+# -----------------------------
+# DATA VIEW
+# -----------------------------
+with st.expander("📂 View Dataset"):
+    st.dataframe(df)
  
 # -----------------------------
 # FOOTER
 # -----------------------------
 st.markdown("---")
-st.markdown("Built for Real Estate Analysis Project 🚀")
+st.markdown("🚀 Developed for Real Estate Analytics Project")
  
