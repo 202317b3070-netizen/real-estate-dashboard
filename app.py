@@ -91,61 +91,6 @@ city_coords = {
     "Pune": (18.52, 73.85),
     "Ahmedabad": (23.02, 72.57)
 }
- 
-# -----------------------------
-# SIDEBAR (UPDATED UI)
-# -----------------------------
-st.sidebar.title("⚙️ Control Panel")
- 
-st.sidebar.markdown("### 🧠 Model Settings")
-model_choice = st.sidebar.selectbox(
-    "Select Model",
-    ["Linear Regression", "Random Forest"]
-)
- 
-st.sidebar.markdown("### 💱 Currency")
-currency = st.sidebar.selectbox(
-    "Select Currency",
-    ["USD", "INR"]
-)
- 
-st.sidebar.markdown("### 🏠 Property Features")
-income = st.sidebar.slider(
-    "Median Income",
-    float(df['MedInc'].min()),
-    float(df['MedInc'].max()),
-    3.0
-)
- 
-rooms = st.sidebar.slider(
-    "Average Rooms",
-    float(df['AveRooms'].min()),
-    float(df['AveRooms'].max()),
-    5.0
-)
-st.sidebar.markdown("### 📍 Location Filter")
-st.sidebar.markdown("### 📍 Select City")
- 
-city = st.sidebar.selectbox(
-    "Choose Location",
-    list(city_coords.keys())
-)
- 
-lat, lon = city_coords[city]
-
-filtered_df = df[
-    (df['Latitude'].between(lat - 1, lat + 1)) &
-    (df['Longitude'].between(lon - 1, lon + 1))
-]
- 
-st.markdown(f"📍 Showing data for: **{city}**")
-occup = st.sidebar.slider(
-    "Occupancy",
-    float(df['AveOccup'].min()),
-    float(df['AveOccup'].max()),
-    3.0
-)
-
 # -----------------------------
 # MODEL
 # -----------------------------
