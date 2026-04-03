@@ -139,7 +139,6 @@ filtered_df = df[
 ]
  
 st.markdown(f"📍 Showing data for: **{city}**")
-st.map(filtered_df[['Latitude', 'Longitude']])
 occup = st.sidebar.slider(
     "Occupancy",
     float(df['AveOccup'].min()),
