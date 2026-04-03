@@ -81,6 +81,17 @@ st.markdown("""
 """)
 
 st.markdown("---")
+city_coords = {
+    "Delhi": (28.61, 77.23),
+    "Mumbai": (19.07, 72.87),
+    "Bangalore": (12.97, 77.59),
+    "Hyderabad": (17.38, 78.48),
+    "Chennai": (13.08, 80.27),
+    "Kolkata": (22.57, 88.36),
+    "Pune": (18.52, 73.85),
+    "Ahmedabad": (23.02, 72.57)
+}
+ 
 # -----------------------------
 # SIDEBAR (UPDATED UI)
 # -----------------------------
@@ -113,27 +124,22 @@ rooms = st.sidebar.slider(
     5.0
 )
 st.sidebar.markdown("### 📍 Location Filter")
+st.sidebar.markdown("### 📍 Select City")
  
-lat = st.sidebar.slider(
-    "Select Latitude",
-    float(df['Latitude'].min()),
-    float(df['Latitude'].max()),
-    float(df['Latitude'].mean())
+city = st.sidebar.selectbox(
+    "Choose Location",
+    list(city_coords.keys())
 )
  
-lon = st.sidebar.slider(
-    "Select Longitude",
-    float(df['Longitude'].min()),
-    float(df['Longitude'].max()),
-    float(df['Longitude'].mean())
-)
+lat, lon = city_coords[city]
 
 filtered_df = df[
     (df['Latitude'].between(lat - 1, lat + 1)) &
     (df['Longitude'].between(lon - 1, lon + 1))
 ]
  
- 
+st.markdown(f"📍 Showing data for: **{city}**")
+st.map(filtered_df[['Latitude', 'Longitude']])
 occup = st.sidebar.slider(
     "Occupancy",
     float(df['AveOccup'].min()),
