@@ -6,6 +6,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 from utils import format_indian_price
+from sidebar import sidebar_controls
 from data import load_data
 import plotly.express as px
 st.markdown("""
@@ -36,6 +37,8 @@ st.markdown("### Analyze housing prices with interactive predictions and insight
 # -----------------------------
 # LOAD DATA
 # -----------------------------
+df=load_data()
+model_choice, currency, mode, income, rooms, occup, budget = sidebar_controls(df)
 st.subheader("📊 Dataset Overview")
  
 st.write("### Shape of Dataset")
@@ -118,6 +121,10 @@ else:
     display_price = f"$ {int(price):,}"
  
 score = model.score(X_test, y_test)
+if mode == "Predict Price":
+    prediction = model.predict([[income, rooms, occup]])
+elif mode == "Analyze Budget":
+    st.write(f"Budget selected: {budget}")
  
 # -----------------------------
 # KPI METRICS
